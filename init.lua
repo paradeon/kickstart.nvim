@@ -955,18 +955,6 @@ local lazyvim_plugins = {
   },
   -- { 'mrjones2014/smart-splits.nvim' },
 
-  {
-    'nvim-orgmode/orgmode',
-    event = 'VeryLazy',
-    config = function()
-      -- Setup orgmode
-      require('orgmode').setup {
-        org_agenda_files = '~/notes/**/*',
-        org_default_notes_file = '~/notes/refile.org',
-      }
-    end,
-  },
-
   -- lazy.nvim
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
@@ -1031,6 +1019,17 @@ if jit.os == 'OSX' then
       require('gp').setup(conf)
 
       -- Setup shortcuts here (see Usage > Shortcuts in the Documentation/Readme)
+    end,
+  })
+  table.insert(lazyvim_plugins, {
+    'nvim-orgmode/orgmode',
+    event = 'VeryLazy',
+    config = function()
+      -- Setup orgmode
+      require('orgmode').setup {
+        org_agenda_files = '~/notes/**/*',
+        org_default_notes_file = '~/notes/refile.org',
+      }
     end,
   })
 end
