@@ -182,10 +182,10 @@ vim.o.confirm = true
 --  See `:help vim.keymap.set()`
 
 -- insert a line before or after without going into insert mode
-vim.keymap.set('n', 'gk', 'O<Esc>')
-vim.keymap.set('n', 'gK', 'O<Esc>j')
-vim.keymap.set('n', 'gj', 'o<Esc>')
-vim.keymap.set('n', 'gJ', 'o<Esc>k')
+-- vim.keymap.set('n', 'gk', 'O<Esc>')
+-- vim.keymap.set('n', 'gK', 'O<Esc>j')
+-- vim.keymap.set('n', 'gj', 'o<Esc>')
+-- vim.keymap.set('n', 'gJ', 'o<Esc>k')
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
