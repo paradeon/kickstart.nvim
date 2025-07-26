@@ -276,6 +276,28 @@ local lazyvim_plugins = {
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
+  'sheerun/vim-polyglot', -- Language packs for Neovim
+  'neoclide/coc.nvim', -- Language Server Protocol (LSP) support for Neovim
+
+  -- {
+  --   'github/copilot.vim',
+  --   enabled = function()
+  --     -- Enable Copilot if the `GITHUB_TOKEN` environment variable is set
+  --     --  This is useful for people who want to use Copilot without a paid subscription
+  --     return vim.env.GITHUB_TOKEN ~= nil
+  --   end,
+  --   opts = {
+  --     -- Enable Copilot for all filetypes
+  --     filetypes = { '*' },
+  --     -- Disable Copilot in certain filetypes
+  --     disable_filetype = { 'TelescopePrompt', 'vim' },
+  --     -- Enable Copilot for insert mode only
+  --     suggestion = { enabled = true, auto_trigger = true, debounce = 75 },
+  --     -- Enable Copilot for normal mode only
+  --     panel = { enabled = false },
+  --   },
+  -- }
+
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -494,6 +516,7 @@ local lazyvim_plugins = {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
+    event = 'VeryLazy',
     ft = 'lua',
     opts = {
       library = {
@@ -796,10 +819,10 @@ local lazyvim_plugins = {
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -930,6 +953,7 @@ local lazyvim_plugins = {
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
+    event = 'VeryLazy',
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -996,32 +1020,72 @@ local lazyvim_plugins = {
   -- you can continue same window with `<space>sr` which resumes last telescope search
 }
 
-if jit.os == 'OSX' then
-  table.insert(lazyvim_plugins, { -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
-      },
-      indent = { enable = true, disable = { 'ruby' } },
+table.insert(lazyvim_plugins, { -- Highlight, edit, and navigate code
+  'nvim-treesitter/nvim-treesitter',
+  build = ':TSUpdate',
+  main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+  -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+  opts = {
+    ensure_installed = {
+      'bash',
+      'c',
+      'diff',
+      'html',
+      'lua',
+      'luadoc',
+      'markdown',
+      'markdown_inline',
+      'query',
+      'vim',
+      'vimdoc',
+      'python',
+      'java',
+      'javascript',
+      'typescript',
+      'powershell',
+      'fish',
+      'rust',
+      'regex',
+      'sql',
+      'xml',
+      'ruby',
+      'json',
+      'kotlin',
+      'scala',
+      'tmux',
     },
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-  })
+    -- Autoinstall languages that are not installed
+    auto_install = true,
+    highlight = {
+      enable = true,
+      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+      --  If you are experiencing weird indenting issues, add the language to
+      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
+      additional_vim_regex_highlighting = { 'ruby' },
+    },
+    indent = { enable = true, disable = { 'ruby' } },
+  },
+  -- There are additional nvim-treesitter modules that you can use to interact
+  -- with nvim-treesitter. You should go explore a few and see what interests you:
+  --
+  --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+  --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+  --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+})
+
+table.insert(lazyvim_plugins, {
+  'nvim-orgmode/orgmode',
+  event = 'VeryLazy',
+  config = function()
+    -- Setup orgmode
+    require('orgmode').setup {
+      org_agenda_files = '~/notes/**/*',
+      org_default_notes_file = '~/notes/refile.org',
+    }
+  end,
+})
+
+if jit.os == 'OSX' then
   table.insert(lazyvim_plugins, {
     'robitx/gp.nvim',
     config = function()
@@ -1031,17 +1095,6 @@ if jit.os == 'OSX' then
       require('gp').setup(conf)
 
       -- Setup shortcuts here (see Usage > Shortcuts in the Documentation/Readme)
-    end,
-  })
-  table.insert(lazyvim_plugins, {
-    'nvim-orgmode/orgmode',
-    event = 'VeryLazy',
-    config = function()
-      -- Setup orgmode
-      require('orgmode').setup {
-        org_agenda_files = '~/notes/**/*',
-        org_default_notes_file = '~/notes/refile.org',
-      }
     end,
   })
   -- table.insert(lazyvim_plugins, {
